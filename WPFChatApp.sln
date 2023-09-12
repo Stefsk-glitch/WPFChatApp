@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFChatApp", "WPFChatApp\WPFChatApp.csproj", "{972070F2-F65E-4B1D-A362-A0B3740297BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFChatApp", "WPFChatApp\WPFChatApp.csproj", "{972070F2-F65E-4B1D-A362-A0B3740297BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{DA7BB267-5FCF-461D-BE8E-429D4ACBFC71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{972070F2-F65E-4B1D-A362-A0B3740297BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{972070F2-F65E-4B1D-A362-A0B3740297BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{972070F2-F65E-4B1D-A362-A0B3740297BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA7BB267-5FCF-461D-BE8E-429D4ACBFC71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA7BB267-5FCF-461D-BE8E-429D4ACBFC71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA7BB267-5FCF-461D-BE8E-429D4ACBFC71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA7BB267-5FCF-461D-BE8E-429D4ACBFC71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

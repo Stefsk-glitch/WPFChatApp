@@ -1,28 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WPFChatApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private TcpClient client;
+        private StreamWriter writer;
+        private StreamReader reader;
+
         public MainWindow()
         {
             InitializeComponent();
+            ConnectToServer();
+        }
+
+        private async void ConnectToServer()
+        {
+            try
+            {
+                client = new TcpClient("localhost", 12345);
+                NetworkStream stream = client.GetStream();
+                writer = new StreamWriter(stream, Encoding.UTF8);
+                reader = new StreamReader(stream, Encoding.UTF8);
+
+                await ReceiveMessages();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+        private async Task ReceiveMessages()
+        {
+            while (true)
+            {
+                try
+                {
+                    string message = await reader.ReadLineAsync();
+                    if (message != null)
+                    {
+                        chatListBox.Items.Add(message);
+                    }
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("Connection to the server is lost.");
+                    break;
+                }
+            }
+        }
+
+        private void SendMessage_Click(object sender, RoutedEventArgs e)
+        {
+            string message = messageTextBox.Text;
+            if (!string.IsNullOrEmpty(message))
+            {
+                writer.WriteLine(message);
+                writer.Flush();
+                messageTextBox.Clear();
+            }
         }
     }
 }
