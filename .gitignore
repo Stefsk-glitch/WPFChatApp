@@ -1,8 +1,8 @@
 # Visual Studio files
 .vscode/
 .vs/
-/bin/
-/obj/
+WPFChatApp/bin/
+WPFChatApp/obj/
 /.idea/
 
 # User-specific files
