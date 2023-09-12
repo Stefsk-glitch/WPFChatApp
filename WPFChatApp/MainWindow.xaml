@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <TextBox HorizontalAlignment="Left" Margin="287,147,0,0" TextWrapping="Wrap" Text="Hello world" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window>
