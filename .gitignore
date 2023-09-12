@@ -3,6 +3,8 @@
 .vs/
 WPFChatApp/bin/
 WPFChatApp/obj/
+Server/bin/
+Server/obj/
 /.idea/
 
 # User-specific files
