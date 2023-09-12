@@ -18,6 +18,7 @@ namespace WPFChatApp
         {
             InitializeComponent();
             ConnectToServer();
+            ReceiveMessages(); // Start receiving messages when the client is initialized
         }
 
         private async void ConnectToServer()
@@ -37,6 +38,7 @@ namespace WPFChatApp
             }
         }
 
+        // Add a method to receive messages from the server
         private async Task ReceiveMessages()
         {
             while (true)
@@ -46,7 +48,11 @@ namespace WPFChatApp
                     string message = await reader.ReadLineAsync();
                     if (message != null)
                     {
-                        chatListBox.Items.Add(message);
+                        // Update the UI with the received message
+                        Dispatcher.Invoke(() =>
+                        {
+                            chatListBox.Items.Add(message);
+                        });
                     }
                 }
                 catch (IOException)

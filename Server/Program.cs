@@ -23,9 +23,53 @@ namespace ChatApp.Server
                 clients.Add(client);
 
                 Console.WriteLine($"Client connected: {((IPEndPoint)client.Client.RemoteEndPoint).Address}");
+
+                // Start a new task to handle communication with this client
+                Task.Run(() => HandleClient(client));
             }
 
-            // TODO: De clients moeten berichten naar elkaar kunnen sturen en van elkaar kunnen ontvangen na dat er 2 connecties opgebouwt zijn.
+            while (true)
+            {
+
+            }
+        }
+
+        static async Task HandleClient(TcpClient client)
+        {
+            try
+            {
+                NetworkStream stream = client.GetStream();
+                StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+
+                while (true)
+                {
+                    string message = await reader.ReadLineAsync();
+                    if (message == null)
+                    {
+                        // Client disconnected
+                        clients.Remove(client);
+                        Console.WriteLine($"Client disconnected: {((IPEndPoint)client.Client.RemoteEndPoint).Address}");
+                        break;
+                    }
+
+                    // Relay the message to all other clients
+                    foreach (var otherClient in clients)
+                    {
+                        if (otherClient != client)
+                        {
+                            StreamWriter writer = new StreamWriter(otherClient.GetStream(), Encoding.UTF8);
+                            writer.WriteLine(message);
+                            writer.Flush();
+                        }
+                    }
+
+                    Console.WriteLine($"Received from {((IPEndPoint)client.Client.RemoteEndPoint).Address}: {message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error handling client: {ex.Message}");
+            }
         }
     }
 }
