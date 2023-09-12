@@ -47,12 +47,8 @@ namespace WPFChatApp
                 {
                     string message = await reader.ReadLineAsync();
                     if (message != null)
-                    {
-                        // Update the UI with the received message
-                        Dispatcher.Invoke(() =>
-                        {
-                            chatListBox.Items.Add(message);
-                        });
+                    { 
+                        chatListBox.Items.Add(message);
                     }
                 }
                 catch (IOException)
@@ -68,6 +64,7 @@ namespace WPFChatApp
             string message = messageTextBox.Text;
             if (!string.IsNullOrEmpty(message))
             {
+                chatListBox.Items.Add("You -> " + message);
                 writer.WriteLine(message);
                 writer.Flush();
                 messageTextBox.Clear();

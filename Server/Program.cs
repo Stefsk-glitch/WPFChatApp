@@ -68,7 +68,7 @@ namespace ChatApp.Server
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error handling client: {ex.Message}");
+                Console.WriteLine("Error handling client: {ex.Message}");
             }
         }
     }
