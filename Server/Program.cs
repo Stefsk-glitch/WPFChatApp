@@ -13,6 +13,19 @@ namespace ChatApp.Server
         static List<TcpClient> clients = new List<TcpClient>();
         static async Task Main(string[] args)
         {
+            // Generate a timestamp for the log file name
+            string timestamp = DateTime.Now.ToString("dd-MM-yyy-HH.mm.ss");
+
+            // Construct the log file path with the timestamp
+            string logFileName = $"log_{timestamp}.txt";
+            string logFilePath = Path.Combine(Environment.CurrentDirectory, logFileName);
+
+            // Create a custom logger that writes to both the console and the log file
+            CustomLogger logger = new CustomLogger(logFilePath);
+
+            // Set the console output to the custom logger
+            Console.SetOut(logger);
+
             TcpListener server = new TcpListener(IPAddress.Any, 12345);
             server.Start();
             Console.WriteLine("Server started.\nWaiting for connections...");
@@ -72,5 +85,25 @@ namespace ChatApp.Server
                 Console.WriteLine($"Error handling client: {ex.Message}");
             }
         }
+    }
+    class CustomLogger : TextWriter
+    {
+        private StreamWriter logFileWriter;
+        private TextWriter originalConsoleWriter;
+
+        public CustomLogger(string logFilePath)
+        {
+            logFileWriter = new StreamWriter(logFilePath, append: true);
+            originalConsoleWriter = Console.Out;
+        }
+
+        public override void WriteLine(string value)
+        {
+            originalConsoleWriter.WriteLine(value);
+            logFileWriter.WriteLine(value);
+            logFileWriter.Flush();
+        }
+
+        public override Encoding Encoding => Encoding.UTF8;
     }
 }

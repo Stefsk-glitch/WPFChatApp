@@ -17,13 +17,6 @@ namespace WPFChatApp
         private StreamWriter writer;
         private StreamReader reader;
 
-        private int seconds;
-        private int minutes;
-        private int hours;
-        private int days;
-        private int months;
-        private int years;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -31,7 +24,6 @@ namespace WPFChatApp
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, OpenExecuted, OpenCanExecute));
             ConnectToServer();
             ReceiveMessages(); // Start receiving messages when the client is initialized
-            updateTimeDate();
         }
 
         private void SaveExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -97,8 +89,8 @@ namespace WPFChatApp
 
         private void SendMessage_Click(object sender, RoutedEventArgs e)
         {
-            updateTimeDate();
-            string message = $"{hours}:{minutes}: " + messageTextBox.Text;
+            string timestamp = DateTime.Now.ToString("HH.mm");
+            string message = timestamp + ": "+ messageTextBox.Text;
             if (!string.IsNullOrEmpty(message))
             {
                 chatListBox.Items.Add("You -> " + message);
@@ -110,11 +102,12 @@ namespace WPFChatApp
 
         private void SaveMessages_Click(object sender, RoutedEventArgs e)
         {
-            updateTimeDate();
-            string filePath = $"chat_messages_{days}-{months}-{years}-{hours}.{minutes}.{seconds}.txt";
+            string timestamp = DateTime.Now.ToString("dd-MM-yyy-HH.mm.ss");
+            string messageFileName = $"messages_{timestamp}.txt";
+
             try
             {
-                using (StreamWriter writer = File.CreateText(filePath))
+                using (StreamWriter writer = File.CreateText(messageFileName))
                 {
                     foreach (var message in chatListBox.Items)
                     {
@@ -159,19 +152,6 @@ namespace WPFChatApp
                     MessageBox.Show($"Error: {ex.Message}");
                 }
             }
-        }
-
-
-        private void updateTimeDate()
-        {
-            DateTime currentDate = DateTime.Now;
-            this.hours = currentDate.Hour;
-            this.minutes = currentDate.Minute;
-            this.seconds = currentDate.Second;
-
-            this.days = currentDate.Day;
-            this.months = currentDate.Month;
-            this.years = currentDate.Year;
         }
     }
 }
