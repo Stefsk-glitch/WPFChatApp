@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace WPFChatApp
 {
@@ -26,10 +27,35 @@ namespace WPFChatApp
         public MainWindow()
         {
             InitializeComponent();
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, SaveExecuted, SaveCanExecute));
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, OpenExecuted, OpenCanExecute));
             ConnectToServer();
             ReceiveMessages(); // Start receiving messages when the client is initialized
             updateTimeDate();
         }
+
+        private void SaveExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveMessages_Click(sender, e);
+        }
+
+        private void SaveCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            // You can add conditions to enable/disable the Save command here
+            e.CanExecute = true; // For example, always enable Save
+        }
+
+        private void OpenExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            LoadMessages_Click(sender, e);
+        }
+
+        private void OpenCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            // You can add conditions to enable/disable the Open command here
+            e.CanExecute = true; // For example, always enable Open
+        }
+
 
         private async void ConnectToServer()
         {

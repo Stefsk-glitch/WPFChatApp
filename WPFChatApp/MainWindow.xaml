@@ -2,6 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Chat Application" Height="350" Width="500">
+    <Window.InputBindings>
+        <!-- Ctrl+S (Save) KeyBinding -->
+        <KeyBinding Key="S" Modifiers="Control" Command="Save" />
+
+        <!-- Ctrl+O (Open) KeyBinding -->
+        <KeyBinding Key="O" Modifiers="Control" Command="Open" />
+    </Window.InputBindings>
     <Grid>
         <ListBox Name="chatListBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,50" />
         <TextBox Name="messageTextBox" VerticalAlignment="Bottom" Margin="10,0,250,10" Height="20" />
