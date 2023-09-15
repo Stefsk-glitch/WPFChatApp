@@ -13,17 +13,13 @@ namespace ChatApp.Server
         static List<TcpClient> clients = new List<TcpClient>();
         static async Task Main(string[] args)
         {
-            // Generate a timestamp for the log file name
             string timestamp = DateTime.Now.ToString("dd-MM-yyy-HH.mm.ss");
 
-            // Construct the log file path with the timestamp
             string logFileName = $"log_{timestamp}.txt";
             string logFilePath = Path.Combine(Environment.CurrentDirectory, logFileName);
 
-            // Create a custom logger that writes to both the console and the log file
             CustomLogger logger = new CustomLogger(logFilePath);
 
-            // Set the console output to the custom logger
             Console.SetOut(logger);
 
             TcpListener server = new TcpListener(IPAddress.Any, 12345);
@@ -37,7 +33,6 @@ namespace ChatApp.Server
 
                 Console.WriteLine($"Client connected: {((IPEndPoint)client.Client.RemoteEndPoint).Address}");
 
-                // Start a new task to handle communication with this client
                 Task.Run(() => HandleClient(client));
             }
         }
@@ -55,13 +50,11 @@ namespace ChatApp.Server
                     string message = await reader.ReadLineAsync();
                     if (message == null)
                     {
-                        // Client disconnected
                         clients.Remove(client);
                         Console.WriteLine($"Client disconnected: {((IPEndPoint)client.Client.RemoteEndPoint).Address}");
                         break;
                     }
 
-                    // Relay the message to all other clients
                     foreach (var otherClient in clients)
                     {
                         if (otherClient != client)

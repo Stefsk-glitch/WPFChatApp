@@ -134,16 +134,13 @@ namespace WPFChatApp
                 {
                     string[] lines = File.ReadAllLines(filePath);
 
-                    // Create an instance of MessageDisplayForm
                     MessageDisplayForm messageDisplayForm = new MessageDisplayForm();
 
-                    // Pass the loaded messages to the form
                     foreach (var line in lines)
                     {
                         messageDisplayForm.msgsList.Add(line);
                     }
 
-                    // Show the form
                     messageDisplayForm.setMessages();
                     messageDisplayForm.Show();
                 }
