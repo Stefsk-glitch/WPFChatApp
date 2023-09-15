@@ -17,7 +17,7 @@ namespace ChatApp.Server
             server.Start();
             Console.WriteLine("Server started.\nWaiting for connections...");
 
-            while (clients.Count < 2)
+            while (true)
             {
                 TcpClient client = await server.AcceptTcpClientAsync();
                 clients.Add(client);
@@ -27,12 +27,8 @@ namespace ChatApp.Server
                 // Start a new task to handle communication with this client
                 Task.Run(() => HandleClient(client));
             }
-
-            while (true)
-            {
-
-            }
         }
+
 
         static async Task HandleClient(TcpClient client)
         {
@@ -65,6 +61,11 @@ namespace ChatApp.Server
 
                     Console.WriteLine($"Received from {((IPEndPoint)client.Client.RemoteEndPoint).Address}: {message}");
                 }
+            }
+            catch(IOException)
+            {
+                clients.Remove(client);
+                Console.WriteLine($"Client disconnected: {((IPEndPoint)client.Client.RemoteEndPoint).Address}");
             }
             catch (Exception ex)
             {
