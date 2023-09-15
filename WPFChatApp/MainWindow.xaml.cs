@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
@@ -107,20 +108,33 @@ namespace WPFChatApp
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Text Files (*.txt)|*.txt";
 
-            openFileDialog.ShowDialog();
-            string filePath = openFileDialog.FileName;
-            try
+            if (openFileDialog.ShowDialog() == true)
             {
-                string[] lines = File.ReadAllLines(filePath);
-                string messageText = string.Join(Environment.NewLine, lines);
-                MessageBox.Show(messageText, "Loaded Messages", MessageBoxButton.OK, MessageBoxImage.Information);
+                string filePath = openFileDialog.FileName;
+                try
+                {
+                    string[] lines = File.ReadAllLines(filePath);
 
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("error");
+                    // Create an instance of MessageDisplayForm
+                    MessageDisplayForm messageDisplayForm = new MessageDisplayForm();
+
+                    // Pass the loaded messages to the form
+                    foreach (var line in lines)
+                    {
+                        messageDisplayForm.msgsList.Add(line);
+                    }
+
+                    // Show the form
+                    messageDisplayForm.setMessages();
+                    messageDisplayForm.Show();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
             }
         }
+
 
         private void updateTimeDate()
         {
