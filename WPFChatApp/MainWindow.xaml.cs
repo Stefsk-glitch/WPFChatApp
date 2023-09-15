@@ -20,10 +20,10 @@ namespace WPFChatApp
         public MainWindow()
         {
             InitializeComponent();
-            CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, SaveExecuted, SaveCanExecute));
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, SaveExecuted, SaveCanExecute));    // connects keyboard shortcuts
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, OpenExecuted, OpenCanExecute));
             ConnectToServer();
-            ReceiveMessages(); // Start receiving messages when the client is initialized
+            ReceiveMessages(); // starts receiving messages when the client is initialized
         }
 
         private void SaveExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -33,8 +33,7 @@ namespace WPFChatApp
 
         private void SaveCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            // You can add conditions to enable/disable the Save command here
-            e.CanExecute = true; // For example, always enable Save
+            e.CanExecute = true;
         }
 
         private void OpenExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -44,8 +43,7 @@ namespace WPFChatApp
 
         private void OpenCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            // You can add conditions to enable/disable the Open command here
-            e.CanExecute = true; // For example, always enable Open
+            e.CanExecute = true;
         }
 
 
@@ -62,11 +60,13 @@ namespace WPFChatApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                SendButton.IsEnabled = false;
+                messageTextBox.Text = "No connection with server.";
+                messageTextBox.IsEnabled = false;
             }
         }
 
-        // Add a method to receive messages from the server
         private async Task ReceiveMessages()
         {
             while (true)

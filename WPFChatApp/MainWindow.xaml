@@ -12,7 +12,7 @@
     <Grid>
         <ListBox Name="chatListBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,50" />
         <TextBox Name="messageTextBox" VerticalAlignment="Bottom" Margin="10,0,250,10" Height="20" />
-        <Button Content="Send" Click="SendMessage_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,170,10" Width="75" Height="20" IsDefault="True" />
+        <Button Name="SendButton" Content="Send" Click="SendMessage_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,170,10" Width="75" Height="20" IsDefault="True" />
         <Button Content="Save" Click ="SaveMessages_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Width="75" RenderTransformOrigin="1.067,0.499"/>
         <Button Content="Load" Click ="LoadMessages_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,90,10" Width="75"/>
     </Grid>
