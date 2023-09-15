@@ -15,11 +15,19 @@ namespace WPFChatApp
         private StreamWriter writer;
         private StreamReader reader;
 
+        private int seconds;
+        private int minutes;
+        private int hours;
+        private int days;
+        private int months;
+        private int years;
+
         public MainWindow()
         {
             InitializeComponent();
             ConnectToServer();
             ReceiveMessages(); // Start receiving messages when the client is initialized
+            updateTimeDate();
         }
 
         private async void ConnectToServer()
@@ -62,7 +70,8 @@ namespace WPFChatApp
 
         private void SendMessage_Click(object sender, RoutedEventArgs e)
         {
-            string message = messageTextBox.Text;
+            updateTimeDate();
+            string message = $"{hours}:{minutes}: " + messageTextBox.Text;
             if (!string.IsNullOrEmpty(message))
             {
                 chatListBox.Items.Add("You -> " + message);
@@ -74,7 +83,8 @@ namespace WPFChatApp
 
         private void SaveMessages_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = "chat_messages.txt";
+            updateTimeDate();
+            string filePath = $"chat_messages_{days}-{months}-{years}-{hours}.{minutes}.{seconds}.txt";
             try
             {
                 using (StreamWriter writer = File.CreateText(filePath))
@@ -110,6 +120,18 @@ namespace WPFChatApp
             {
                 MessageBox.Show("error");
             }
+        }
+
+        private void updateTimeDate()
+        {
+            DateTime currentDate = DateTime.Now;
+            this.hours = currentDate.Hour;
+            this.minutes = currentDate.Minute;
+            this.seconds = currentDate.Second;
+
+            this.days = currentDate.Day;
+            this.months = currentDate.Month;
+            this.years = currentDate.Year;
         }
     }
 }
