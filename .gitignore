@@ -5,6 +5,8 @@ WPFChatApp/bin/
 WPFChatApp/obj/
 Server/bin/
 Server/obj/
+UnitTests/obj/
+UnitTests/bin/
 /.idea/
 
 # User-specific files
