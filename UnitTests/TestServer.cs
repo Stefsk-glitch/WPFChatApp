@@ -2,6 +2,7 @@
 using Moq;
 using System.Net.Sockets;
 using System.Net;
+using System.Text;
 
 namespace UnitTests
 {
@@ -23,28 +24,48 @@ namespace UnitTests
         }
 
         [Fact]
-        public void TestClientConnect()
-        {
-            var mock = new Mock<IClient>();
-            mock.Setup(test => test.GetTcpClient()).Returns(() => new TcpClient("localhost", 12345));
-
-            IClient clientProvider = mock.Object;
-            TcpClient client = clientProvider.GetTcpClient();
-
-            Assert.NotNull(client);
-        }
-
-        [Fact]
-        public void TestLogger()
+        public void TestClientConnectedAndReceiveMessage()
         {
             var mock = new Mock<IServer>();
+            mock.Setup(test => test.getServer()).Returns(() => new TcpListener(IPAddress.Any, 12345));
 
+            IServer mockServer = mock.Object;
+            TcpListener server = mockServer.getServer();
+            server.Start();
+
+            TcpClient client = new TcpClient("localhost", 12345);
+
+            Assert.True(client.Connected);
+
+            try
+            {
+                string messageToSend = "test message";
+
+                // Client sends a message to the server
+                using (NetworkStream clientStream = client.GetStream())
+                {
+                    byte[] messageBytes = Encoding.UTF8.GetBytes(messageToSend);
+                    clientStream.Write(messageBytes, 0, messageBytes.Length);
+                }
+
+                // Server accepts the client connection
+                TcpClient connectedClient = server.AcceptTcpClient();
+                NetworkStream serverStream = connectedClient.GetStream();
+
+                byte[] buffer = new byte[1024];
+                int bytesRead = serverStream.Read(buffer, 0, buffer.Length);
+                string receivedMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
+                // Assert that the received message matches the sent message
+                Assert.Equal(messageToSend, receivedMessage);
+
+                connectedClient.Close();
+            }
+            finally
+            {
+                client.Close();
+                server.Stop();
+            }
         }
-
-
-
-        // TODO: logger is able to open file and write to it.
-
-        // TODO: check if server able to receive messages
     }
 }

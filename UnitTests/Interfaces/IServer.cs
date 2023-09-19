@@ -7,7 +7,5 @@ namespace UnitTests
     public interface IServer
     {
         public TcpListener getServer();
-        public StreamWriter getStreamWriter();
-        public TextWriter GetTextWriter();
     }
 }
