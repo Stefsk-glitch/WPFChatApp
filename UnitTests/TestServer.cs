@@ -22,7 +22,26 @@ namespace UnitTests
             Assert.NotNull(server); // Check if the server is not null
         }
 
-        // TODO: create client able to connect test
+        [Fact]
+        public void TestClientConnect()
+        {
+            var mock = new Mock<IClient>();
+            mock.Setup(test => test.GetTcpClient()).Returns(() => new TcpClient("localhost", 12345));
+
+            IClient clientProvider = mock.Object;
+            TcpClient client = clientProvider.GetTcpClient();
+
+            Assert.NotNull(client);
+        }
+
+        [Fact]
+        public void TestLogger()
+        {
+            var mock = new Mock<IServer>();
+
+        }
+
+
 
         // TODO: logger is able to open file and write to it.
 
